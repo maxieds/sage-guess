@@ -26,38 +26,65 @@ from numpy import unique
 
 class GuessFormulaResult(object): 
      r"""
-     Abstract class that packages the data for a sequence formula 
+     Base class that packages the data for a sequence formula 
      guess obtained from the FriCAS guess package
      """ 
 
      def __init__(self, sage_expr): 
+     r"""
+     Initializes the sequence function guess with input match data.
+
+     INPUT:
+     - ``sage_expr`` -- a sage expression representing the guess function
+
+     """
           self.sage_expr = sage_expr
           self.functor = lambda x: \
                eval_on_operands(lambda x: sage_expr)(n).subs(n == x)
      ## 
 
      def __str__(self): 
+     r"""
+     Returns a string representation of the sequence formula
+     """
           n = var('n')
           return str(self.functor(n))
      ## 
 
      def __latex__(self): 
+     r"""
+     Returns a (LaTeX) string representation of the sequence formula
+     """
           return str(self)
      ## 
 
      def __call__(self, x): 
+     r"""
+     operator() passes to and returns input from the sequence formula
+     """
           return self.functor(x)
      ## 
 
      def get_functor(self): 
+     r"""
+     Returns a lambda function representing the sequence formula
+     """
           return self.functor
      ## 
 
      def desc(self): 
+     r"""
+     Returns a description of the matching sequence formula. 
+     Should be overridden by subclasses. 
+     """
           return "<No Description>"
      ## 
 
      def print_summary(self): 
+     r"""
+     Prints a summary of the sequence formula match. 
+     Should be overridden by subclasses.
+     """
           n = var('n')
           print "   >> Sequence Formula: ", self.functor(n)
      ##
@@ -72,6 +99,13 @@ class GuessingFormulasForSeqs(object):
 
      @staticmethod
      def fricas2sage(fricas_return): 
+     r"""
+     Converts output returned by FriCAS into a Sage expression
+
+     INPUT:
+
+     - ``fricas_return`` -- output of calling a fricas.* function
+     """
           n = var('n')
           fricas_return = fricas_return.unparsed_input_form() 
           if fricas_return != '[]': 
@@ -82,24 +116,52 @@ class GuessingFormulasForSeqs(object):
 
      @staticmethod
      def guessRationalFunction(sequence): 
+     r"""
+     Guesses a rational function formula for the input sequence.
+
+     INPUT:
+
+     - ``sequence`` -- a list of integers
+     """
           fricas_output = fricas.guessRat(sequence)
           return GuessingFormulasForSeqs.fricas2sage(fricas_output)
      ##
 
      @staticmethod
      def guessExponentialRationalFunction(sequence): 
-          fricas_output = fricas.guessExpRat(sequence)
+     r"""
+     Guesses an exponential-rational function formula for the input sequence.
+
+     INPUT:
+
+     - ``sequence`` -- a list of integers
+     """
+         fricas_output = fricas.guessExpRat(sequence)
           return GuessingFormulasForSeqs.fricas2sage(fricas_output)
      ##
 
      @staticmethod
      def guessBinomialRationalFunction(sequence): 
-          fricas_output = fricas.guessBinRat(sequence)
+     r"""
+     Guesses a binomial-rational function formula for the input sequence.
+
+     INPUT:
+
+     - ``sequence`` -- a list of integers
+     """
+         fricas_output = fricas.guessBinRat(sequence)
           return GuessingFormulasForSeqs.fricas2sage(fricas_output)
      ##
 
      @staticmethod
      def guess(sequence): 
+     r"""
+     Guesses a formula for an input sequence using a multi-functional approach.
+
+     INPUT:
+
+     - ``sequence`` -- a list of integers 
+     """
           guess_funcs = [ 
                GuessingFormulasForSeqs.guessRationalFunction, 
                GuessingFormulasForSeqs.guessExponentialRationalFunction, 
