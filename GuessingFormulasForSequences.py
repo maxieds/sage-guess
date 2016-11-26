@@ -25,6 +25,10 @@ from sage.symbolic.function_factory import eval_on_operands
 from numpy import unique
 
 class GuessFormulaResult(object): 
+     r"""
+     Abstract class that packages the data for a sequence formula 
+     guess obtained from the FriCAS guess package
+     """ 
 
      def __init__(self, sage_expr): 
           self.sage_expr = sage_expr
@@ -61,6 +65,10 @@ class GuessFormulaResult(object):
 ## GuessFormulaResult
 
 class GuessingFormulasForSeqs(object): 
+     r"""
+     Container class for the python wrappers around the FriCAS guess package.
+     - Implements: guessRat, guessExpRat, guessBinRat
+     """
 
      @staticmethod
      def fricas2sage(fricas_return): 
