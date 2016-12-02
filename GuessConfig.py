@@ -57,3 +57,17 @@ def IsOne(elem):
      ##
 ##
 
+def IsInteger(elem): 
+     r""" 
+     Returns whether the input element is an integer of some type. 
+
+     INPUTS: 
+     - ``elem`` -- An integer-like Python or Sage variable
+     """ 
+     if isinstance(elem, int) or isinstance(elem, long): 
+          return True
+     else: 
+          return elem.is_integer()
+     ##
+##
+
