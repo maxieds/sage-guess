@@ -1,7 +1,13 @@
-#### GuessConfig.py : 
-#### Constants and other definitions for the guess package bundle
-#### Author:  Maxie D. Schmidt
-#### Created: 2016.11.25
+
+r"""
+GuessConfig.py 
+
+Constants and other definitions for the guess package bundle
+
+AUTHORS: 
+- Maxie D. Schmidt (Created: 2016.11.25) 
+
+"""
 
 from ColorizeString import print_color_string
 
@@ -12,17 +18,24 @@ MAX_OEIS_RESULTS = 2
 FIRST, LAST, NULL = 0, 1, None
 X, Y = 0, 1
 
-def TODO(value): return value
+def TODO(value): 
+     r"""
+     Returns its input. Primarily used for documenting features / code that 
+     needs to be updated in the source. 
 
-def print_debug(msg, debugging = DEBUGGING, fg = 'FGWHITE', bg = 'BGRED'): 
-     if not debugging: 
-          return None
-     print_color_string("!!! DEBUG !!!", opts = [fg, bg, 'BOLD', 'UL'])
-     print_color_string(" : ", opts = ['NORMAL'])
-     print msg
+     INPUTS: 
+     - ``value`` -- Any value. 
+     """
+     return value
 ## 
 
 def IsZero(elem): 
+     r""" 
+     Returns whether the input element represents zero. 
+
+     INPUTS: 
+     - ``elem`` -- An integer-like Python or Sage variable
+     """ 
      if isinstance(elem, int) or isinstance(elem, long): 
           return elem == 0
      else: 
@@ -31,6 +44,12 @@ def IsZero(elem):
 ##
 
 def IsOne(elem): 
+     r""" 
+     Returns whether the input element represents one. 
+
+     INPUTS: 
+     - ``elem`` -- An integer-like Python or Sage variable
+     """ 
      if isinstance(elem, int) or isinstance(elem, long): 
           return elem == 1
      else: 
