@@ -407,8 +407,16 @@ class GuessSpecialSeqResult(GuessFormulaResult):
           if domain_dim == 1: 
                subst_args = str(str(lcidx_func[X]) % 'n')
           else: 
-               subst_args = (str(str(lcidx_func[X]) % 'n'), \
-                             str(str(lcidx_func[Y]) % 'n'))
+               try: 
+                    argx = str(str(lcidx_func[X]) % 'n') 
+               except TypeError: 
+                    argx = str(lcidx_func[X])
+               try: 
+                    argy = str(str(lcidx_func[Y]) % 'n')
+               except TypeError: 
+                    argy = str(lcidx_func[Y])
+               ##
+               subst_args = (argx, argy)
           ## 
           return str(seqgen) % subst_args
      ## 
@@ -580,13 +588,48 @@ def guess(sequence, quick_eval = True, spseq_factors = SPECIAL_SEQUENCES,
      sequence by defining a user guess function: 
 
      sage: user_guess_func = lambda n: Rational(3 * (2**n)) / factorial(n)
-     sage: seq = [3 * user_guess_func(n) * Binom2(n+3, 3) for n in range(1, 8)]
+     sage: seq = [3 * user_guess_func(n) * Binom2(n+3, 3) for n in range(0, 8)]
      sage: print seq 
      [9, 288, 1800, 4800, 7350, 37632/5, 28224/5, 23040/7]
      sage: sm = guess(seq, user_guess_func = user_guess_func, 
      ....:            spseq_factors = [SeqGen_Binomial, SeqGen_BinomialSquared])
      sage: print_match_summary(sm)
-     TODO
+      ==== Formula Match # 1 / 10 ==== 
+        >> Sequence Formula:  1/12*n^6 + n^5 + 29/6*n^4 + 12*n^3 + 193/12*n^2 + 11*n + 3
+      ==== Formula Match # 2 / 10 ==== 
+        >> Sequence Formula:  1/12*n^6 + n^5 + 29/6*n^4 + 12*n^3 + 193/12*n^2 + 11*n + 3
+      ==== Formula Match # 3 / 10 ==== 
+        >> Factors Formula:     Binom(3, 1) * RemSeq(n)
+        >> Remaining Sequence:  [1, 16, 100, 400, 1225, 3136, 7056, 14400]
+        >> Remaining Sequence Formula(s):  [1/36*n^6 + 1/3*n^5 + 29/18*n^4 + 4*n^3 + 193/36*n^2 + 11/3*n + 1, 1/36*n^6 + 1/3*n^5 + 29/18*n^4 + 4*n^3 + 193/36*n^2 + 11/3*n + 1]
+      ==== Formula Match # 4 / 10 ==== 
+        >> Factors Formula:     Binom(3, 2) * RemSeq(n)
+        >> Remaining Sequence:  [1, 16, 100, 400, 1225, 3136, 7056, 14400]
+        >> Remaining Sequence Formula(s):  [1/36*n^6 + 1/3*n^5 + 29/18*n^4 + 4*n^3 + 193/36*n^2 + 11/3*n + 1, 1/36*n^6 + 1/3*n^5 + 29/18*n^4 + 4*n^3 + 193/36*n^2 + 11/3*n + 1]
+      ==== Formula Match # 5 / 10 ==== 
+        >> Factors Formula:     Binom(n + 3, 1) * RemSeq(n)
+        >> Remaining Sequence:  [1, 12, 60, 200, 525, 1176, 2352, 4320]
+        >> Remaining Sequence Formula(s):  [1/12*n^5 + 3/4*n^4 + 31/12*n^3 + 17/4*n^2 + 10/3*n + 1, 1/12*n^5 + 3/4*n^4 + 31/12*n^3 + 17/4*n^2 + 10/3*n + 1]
+      ==== Formula Match # 6 / 10 ==== 
+        >> Factors Formula:     Binom(n + 3, 2) * RemSeq(n)
+        >> Remaining Sequence:  [1, 8, 30, 80, 175, 336, 588, 960]
+        >> Remaining Sequence Formula(s):  [1/6*n^4 + 7/6*n^3 + 17/6*n^2 + 17/6*n + 1, 1/6*n^4 + 7/6*n^3 + 17/6*n^2 + 17/6*n + 1]
+      ==== Formula Match # 7 / 10 ==== 
+        >> Factors Formula:     Binom(n + 3, n + 1) * RemSeq(n)
+        >> Remaining Sequence:  [1, 8, 30, 80, 175, 336, 588, 960]
+        >> Remaining Sequence Formula(s):  [1/6*n^4 + 7/6*n^3 + 17/6*n^2 + 17/6*n + 1, 1/6*n^4 + 7/6*n^3 + 17/6*n^2 + 17/6*n + 1]
+      ==== Formula Match # 8 / 10 ==== 
+        >> Factors Formula:     Binom(n + 3, n + 2) * RemSeq(n)
+        >> Remaining Sequence:  [1, 12, 60, 200, 525, 1176, 2352, 4320]
+        >> Remaining Sequence Formula(s):  [1/12*n^5 + 3/4*n^4 + 31/12*n^3 + 17/4*n^2 + 10/3*n + 1, 1/12*n^5 + 3/4*n^4 + 31/12*n^3 + 17/4*n^2 + 10/3*n + 1]
+      ==== Formula Match # 9 / 10 ==== 
+        >> Factors Formula:     Binom2(n + 3, n) * RemSeq(n)
+        >> Remaining Sequence:  [3, 3, 3, 3, 3, 3, 3, 3]
+        >> Remaining Sequence Formula(s):  [3]
+      ==== Formula Match # 10 / 10 ==== 
+        >> Factors Formula:     Binom2(n + 3, 3) * RemSeq(n)
+        >> Remaining Sequence:  [3, 3, 3, 3, 3, 3, 3, 3]
+        >> Remaining Sequence Formula(s):  [3]
      
      Next, lets define an input sequence involving the factorial normalized 
      first-order harmonic numbers. This sequence arises as cases of at least 
@@ -594,12 +637,11 @@ def guess(sequence, quick_eval = True, spseq_factors = SPECIAL_SEQUENCES,
      should generate some additional results for comparison: 
 
      sage: seq = [factorial(n+1) * harmonic_number(n+1, 1) for n in range(0, 8)]
-     sage: print seq 
      sage: spseq_factors = [SeqGen_FirstOrderHarmonic, SeqGen_StirlingS1, 
      ....:                  SeqGen_NormalizedHarmonicNumber]
      sage: sm = guess(seq, spseq_factors = spseq_factors, num_seq_factors = 1)
      sage: print_match_summary(sm)
-     TODO 
+     <TODO> 
 
      Similarly, we repeat the same search except with index inputs to the 
      sequence shifted from n+1 -> 2n+1: 
@@ -607,7 +649,7 @@ def guess(sequence, quick_eval = True, spseq_factors = SPECIAL_SEQUENCES,
      sage: seq = [factorial(2*n+1) * harmonic_number(2*n+1, 1) for n in range(0, 8)]
      sage: sm = guess(seq, spseq_factors = spseq_factors, num_seq_factors = 1)
      sage: print_match_summary(sm)
-     TODO 
+     <TODO> 
 
      Another related sequence case is formed by the second column of the 
      Stirling numbers of the first kind with S1(n, 2) = (n-1)! H_{n-1}, 
@@ -616,11 +658,10 @@ def guess(sequence, quick_eval = True, spseq_factors = SPECIAL_SEQUENCES,
      harmonic series: 
      
      sage: seq = [S1(3*n+1, 2) for n in range(0, 6)]
-     sage: print seq 
-     TODO
-     sage: sm = guess(seq, spseq_factors = [SeqGen_StirlingS1, SeqGen_FirstOrderHarmonic])
+     sage: sm = guess(seq, spseq_factors = [SeqGen_StirlingS1, 
+     ....:                                  SeqGen_FirstOrderHarmonic])
      sage: print_match_summary(sm)
-     TODO 
+     <TODO> 
 
      An example where the special sequence factor identified is not an 
      exact match for the sequence, and is thus non-trivially passed into the 
@@ -628,13 +669,33 @@ def guess(sequence, quick_eval = True, spseq_factors = SPECIAL_SEQUENCES,
 
      sage: seq = [13 * n * S1(3*n+1, 2*n+2) for n in range(1, 8)]
      sage: print seq 
-     TODO
+     [13, 546, 33930, 2900040, 318475430, 42883563996, 6851359865350]
      sage: sm = guess(seq, spseq_factors = [SeqGen_StirlingS1])
      sage: print_match_summary(sm)
-     TODO
+      ==== Formula Match # 1 / 1 ==== 
+         >> Factors Formula:     StirlingS1(3 * n + 4, 2 * n + 4) * RemSeq(n)
+         >> Remaining Sequence:  [13, 26, 39, 52, 65, 78, 91]
+         >> Remaining Sequence Formula(s):  [13*n + 13, 13*n + 13]
 
-     TODO: Polylogarithm / E1 numerator examples 
-     TODO: Need an example of a double factor sequence 
+     The numerators of the negative order polylogarithm series are 
+     expanded by the first-order Eulerian number triangle. We can compute 
+     formulas for sequences of the coefficients of these numerator functions 
+     in the following way: 
+
+     sage: n, z = var('n, z')
+     sage: scf = 3
+     sage: getseq_func = lambda gf, z, scf: \
+     ....:               expand(numerator(factor(gf))).coefficient(z, scf)
+     sage: seq = [int(getseq_func(sum((n**k) * (z**n), n, 1, infinity), z, scf)) \
+     ....:        for k in range(scf, 8 + scf)]
+     sage: sm = guess(seq, spseq_factors = [SeqGen_EulerianE1])
+     sage: print_match_summary(sm) 
+     <TODO>
+     
+     Finally, we conclude the examples in this short section by producing 
+     a working, but still semi-toy conjured up, example of an input 
+     sequence with factors of not one, but two special sequences: 
+     <TODO> 
 
      MISC NOTES / TODO / FUTURE FEATURES: 
      - The FriCAS package returns an incorrect formula on the sequence 
