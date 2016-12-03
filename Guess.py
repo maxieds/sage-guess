@@ -598,7 +598,7 @@ def guess(sequence, quick_eval = True, spseq_factors = SPECIAL_SEQUENCES,
      sage: spseq_factors = [SeqGen_FirstOrderHarmonic, SeqGen_StirlingS1, 
      ....:                  SeqGen_NormalizedHarmonicNumber]
      sage: sm = guess(seq, spseq_factors = spseq_factors, num_seq_factors = 1)
-     sage: print_summary_match(sm)
+     sage: print_match_summary(sm)
      TODO 
 
      Similarly, we repeat the same search except with index inputs to the 
@@ -606,7 +606,7 @@ def guess(sequence, quick_eval = True, spseq_factors = SPECIAL_SEQUENCES,
 
      sage: seq = [factorial(2*n+1) * harmonic_number(2*n+1, 1) for n in range(0, 8)]
      sage: sm = guess(seq, spseq_factors = spseq_factors, num_seq_factors = 1)
-     sage: print_summary_match(sm)
+     sage: print_match_summary(sm)
      TODO 
 
      Another related sequence case is formed by the second column of the 
@@ -614,9 +614,29 @@ def guess(sequence, quick_eval = True, spseq_factors = SPECIAL_SEQUENCES,
      where H_n denotes the sequence of first-order harmonic numbers 
      corresponding to the sequence of partial sums of the divergent 
      harmonic series: 
+     
+     sage: seq = [S1(3*n+1, 2) for n in range(0, 6)]
+     sage: print seq 
+     TODO
+     sage: sm = guess(seq, spseq_factors = [SeqGen_StirlingS1, SeqGen_FirstOrderHarmonic])
+     sage: print_match_summary(sm)
+     TODO 
 
+     An example where the special sequence factor identified is not an 
+     exact match for the sequence, and is thus non-trivially passed into the 
+     guess_remaining_sequence function for inspection: 
 
-     MISC TODO / NOTES / FUTURE FEATURES: 
+     sage: seq = [13 * n * S1(3*n+1, 2*n+2) for n in range(1, 8)]
+     sage: print seq 
+     TODO
+     sage: sm = guess(seq, spseq_factors = [SeqGen_StirlingS1])
+     sage: print_match_summary(sm)
+     TODO
+
+     TODO: Polylogarithm / E1 numerator examples 
+     TODO: Need an example of a double factor sequence 
+
+     MISC NOTES / TODO / FUTURE FEATURES: 
      - The FriCAS package returns an incorrect formula on the sequence 
        input of [1, -1, 1, -1, 1, -1, 1, -1]
      - In the tutorial, need to add more non-toy examples of special sequences 
@@ -633,6 +653,8 @@ def guess(sequence, quick_eval = True, spseq_factors = SPECIAL_SEQUENCES,
        domain dimensions of 1 or 2. These two cases should cover almost all 
        non-parameterized special sequence cases which are not polynomial in 
        one or more indeterminates, x. 
+     - Note that the input sequences are indexed starting from n >= 0, not 
+       n >= 1 which is more convenient in some applications. 
 
      """
 
@@ -657,7 +679,6 @@ def guess(sequence, quick_eval = True, spseq_factors = SPECIAL_SEQUENCES,
      while sequence[0] == 0: 
           sequence = sequence[1:]
      ## 
-     print sequence
 
      guess_subroutine = lambda sequence: \
           guess_special_sequence_factors(sequence, quick_eval = quick_eval, 
