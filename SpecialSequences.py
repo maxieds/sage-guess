@@ -1,9 +1,14 @@
-## SpecialSequences.py 
- # Implements several well-known triangular sequences in two indices 
- # and a couple of special functions still not stock in Sage
- # @author Maxie D. Schmidt
- # @since 2016.05.19
-## 
+
+r""" 
+SpecialSequences.py 
+
+Implements several well-known triangular sequences in two indices 
+and a couple of other special function forms still not stock in Sage. 
+
+AUTHORS: 
+- Maxie D. Schmidt (Created: 2016.05.19) 
+
+"""
 
 import sys
 import numpy as np
@@ -64,6 +69,8 @@ class triangular_sequence(object):
      def get_data(self, n, k): 
           if n < 0 or k < 0 or k > n or n > self.stored_rows:
                return 0
+          elif n == 0 and k == 0: 
+               return 1
           elif n > self.stored_rows:
                self.generate_rows(self.stored_rows + 1, n)
           ##
@@ -100,27 +107,6 @@ def Binom(n, k): return BinomTriangle.get_data(n, k)
 def BinomSymmetric(n, k): return BinomTriangle.get_data(n + k, k)
 def Binom2(n, k): return BinomTriangle.get_data(n, k) ** 2
 
-def get_special_function_by_name(str_name):
-     if str_name == "Identity":
-          return lambda n, k: 1
-     if str_name == "S1":
-          return lambda n, k: S1(n, k)
-     elif str_name == "S2":
-          return lambda n, k: S2(n, k)
-     elif str_name == "E1":
-          return lambda n, m: E1(n, m)
-     elif str_name == "E2":
-          return lambda n, k: E2(n, k)
-     elif str_name == "Binom":
-          return lambda n, k: Binom(n, k)
-     elif str_name == "BinomSym":
-          return lambda n, k: Binom(n + k, k)
-     elif str_name == "Binom2":
-          return lambda n, k: Binom2(n, k)
-     else: 
-         return None
-## def 
-
 def generating_function_coeff(ogf, z, n): 
      return taylor(ogf, z, 0, n + 1).coefficient(z, n)
 ##
@@ -146,10 +132,59 @@ SeqGen_StirlingS1 = \
                        lambda n, k: S1(n, k), 
                        domain_dim = 2, 
                        latex_fmt = "|s\\left({0}, {1}\\right)|")
+SeqGen_StirlingS2 = \
+     SequenceGenerator("StirlingS2", 
+                       lambda n, k: S2(n, k), 
+                       domain_dim = 2, 
+                       latex_fmt = "S\\left({0}, {1}\\right)")
+SeqGen_EulerianE1 = \
+     SequenceGenerator("EulerianE1", 
+                       lambda n, k: E1(n, k), 
+                       domain_dim = 2, 
+                       latex_fmt = "E_1\\left({0}, {1}\\right)")
+SeqGen_EulerianE2 = \
+     SequenceGenerator("EulerianE2", 
+                       lambda n, k: E2(n, k), 
+                       domain_dim = 2, 
+                       latex_fmt = "E_2\\left({0}, {1}\\right)")
+SeqGen_Binomial = \
+     SequenceGenerator("Binom", 
+                       lambda n, k: Binom(n, k), 
+                       domain_dim = 2, 
+                       latex_fmt = "\\binom{{0}}{{1}}")
+SeqGen_BinomialSym = \
+     SequenceGenerator("BinomSymmetric", 
+                       lambda n, k: BinomSymmetric(n, k), 
+                       domain_dim = 2, 
+                       latex_fmt = "\\binom{{0}+{1}}{{1}}")
+SeqGen_BinomialSquared = \
+     SequenceGenerator("Binom2", 
+                       lambda n, k: Binom2(n, k), 
+                       domain_dim = 2, 
+                       latex_fmt = "\\binom{{0}}{{1}}^2")
+SeqGen_Factorial2 = \
+     SequenceGenerator("Factorial2", 
+                       lambda n: (2 ** n) * pochhammer(0.5, n) if (n % 2) == 1\
+                                 else (2 ** n) * factorial(n), 
+                       domain_dim = 1, 
+                       latex_fmt = "\\left({0}\\right)!!")
+SeqGen_NormalizedHarmonicNumber = \
+     SequenceGenerator("NormalizedHNum", 
+                       lambda n, r: factorial(n) * harmonic_number(n, r), 
+                       domain_dim = 2, 
+                       latex_fmt = "({0})! \\cdot H_{{0}}^{({1})}")
 
 SPECIAL_SEQUENCES = [ 
      SeqGen_Bernoulli, 
      SeqGen_FirstOrderHarmonic, 
      SeqGen_StirlingS1, 
+     SeqGen_StirlingS2, 
+     SeqGen_EulerianE1, 
+     SeqGen_EulerianE2, 
+     SeqGen_Binomial, 
+     SeqGen_BinomialSym, 
+     SeqGen_BinomialSquared, 
+     SeqGen_Factorial2, 
+     SeqGen_NormalizedHarmonicNumber, 
 ]
 
