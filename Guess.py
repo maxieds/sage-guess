@@ -641,11 +641,6 @@ def guess(sequence, quick_eval = True, spseq_factors = SPECIAL_SEQUENCES,
        input of [1, -1, 1, -1, 1, -1, 1, -1]
      - In the tutorial, need to add more non-toy examples of special sequences 
        arising in applications 
-     - Need to work on handling / optimizing cases of special sequence 
-       factors with many entries of 1, such as in the Stirling number triangles. 
-       This should greatly improve the orders of long running times for guess and 
-       allow for plausible guessing over a larger number of special sequences at 
-       once 
      - Would like to add polynomial sequence recognition to the package 
      - Add the GFun.py routines which include many sequence (generating
        function) transformations to try out on the input sequences 
@@ -655,6 +650,8 @@ def guess(sequence, quick_eval = True, spseq_factors = SPECIAL_SEQUENCES,
        one or more indeterminates, x. 
      - Note that the input sequences are indexed starting from n >= 0, not 
        n >= 1 which is more convenient in some applications. 
+     - Need to make sure the input sequence to the guess* routines are 
+       integer-valued 
 
      """
 

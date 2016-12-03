@@ -330,13 +330,13 @@ SeqGen_BinomialSquared = \
                        latex_fmt = "\\binom{{0}}{{1}}^2")
 SeqGen_Factorial2 = \
      SequenceGenerator("Factorial2", 
-                       lambda n: (2 ** n) * pochhammer(0.5, n) if (n % 2) == 1\
+                       lambda n: (2 ** n) * int(pochhammer(0.5, n)) if (n % 2) == 1\
                                  else (2 ** n) * factorial(n), 
                        domain_dim = 1, 
                        latex_fmt = "\\left({0}\\right)!!")
 SeqGen_NormalizedHarmonicNumber = \
      SequenceGenerator("NormalizedHNum", 
-                       lambda n, r: factorial(n) * harmonic_number(n, r), 
+                       lambda n, r: (factorial(n)**r) * harmonic_number(n, r), 
                        domain_dim = 2, 
                        latex_fmt = "({0})! \\cdot H_{{0}}^{({1})}")
 

@@ -334,10 +334,10 @@ class LinearCombination(object):
                raise ValueError('Insufficient number of sequence elements.')
                return None
           ##
-          datax, dataxp1 = index_seq[init_xpos][XY], index_seq[init_xpos + 1][XY]
-          local_a = dataxp1 - datax
+          d1, d2 = index_seq[init_xpos][XY], index_seq[init_xpos + 1][XY]
+          local_a = d2 - d1
           if local_a < 0: return None
-          local_b = datax - local_a * init_xpos
+          local_b = 2 * d1 - d2
           lc = LinearCombination(local_a, local_b)
           if check_all_data:
                for (x, s) in enumerate(index_seq): 
@@ -348,17 +348,18 @@ class LinearCombination(object):
      ##
 
      @staticmethod
-     def find_all_linear_combinations(index_seq, domain_dim = 1): 
+     def find_all_linear_combinations(index_seq, seqgen, domain_dim = 1): 
           r"""
           Finds all possible accurate index combinations formed by the 
           input sequence of index 2-tuples. 
 
           INPUTS: 
           - ``index_seq`` -- A list of lists of index 2-tuples 
+          - ``seqgen`` -- A SequenceGenerator object 
           - ``domain_dim`` -- Whether the corresponding special sequence is 
                               indexed by the index_seq is one or two-dimensional. 
           """ 
-          (E0Seq, E1Seq) = map(FiniteEnumeratedSet, index_seq[0:2])
+          (E0Seq, E1Seq) = map(FiniteEnumeratedSet, index_seq[1:3])
           cprod = cartesian_product([E0Seq, E1Seq])
           lc_list = []
           for (idx0, idx1) in cprod: 
@@ -369,11 +370,13 @@ class LinearCombination(object):
           ## 
           checked_lclist = []
           for lc in lc_list: 
-               for sidx in range(2, len(index_seq)): 
+               for sidx in range(0, len(index_seq)): 
                     lc_xindex, lc_yindex = lc[X](sidx), lc[Y](sidx)
-                    if lc_xindex not in map(lambda t: t[X], index_seq[sidx]) or \
-                       domain_dim == 2 and \
-                       lc_yindex not in map(lambda t: t[Y], index_seq[sidx]): 
+                    spseq_value = seqgen((lc_xindex, lc_yindex)) 
+                    if IsOne(spseq_value): continue
+                    elif lc_xindex not in map(lambda t: t[X], index_seq[sidx]) or \
+                         domain_dim == 2 and \
+                         lc_yindex not in map(lambda t: t[Y], index_seq[sidx]): 
                          break
                     ##
                ## 
@@ -573,7 +576,7 @@ class SequenceElement(object):
           elif IsOne(b.value) and IsOne(a.value):
                return True
           elif IsOne(b.value): 
-               return True
+               return False
           ## 
           for (prime, ppow) in b.factor_list():
                if PrimePower(prime, ppow) not in a: 

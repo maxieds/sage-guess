@@ -208,7 +208,8 @@ class SearchSequenceFactors(object):
                seq_factors_list += [cur_elem_factors]
           ## 
           lc_list = LinearCombination.find_all_linear_combinations(\
-                    seq_factors_list, self.sequence_generator.domain_dimension())
+                    seq_factors_list, self.sequence_generator, \
+                    self.sequence_generator.domain_dimension())
           lc_list = map(lambda lc: \
                     (lc, self.compute_remaining_terms(sequence, lc)), lc_list)
           return lc_list
