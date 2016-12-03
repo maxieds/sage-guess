@@ -637,19 +637,32 @@ def guess(sequence, quick_eval = True, spseq_factors = SPECIAL_SEQUENCES,
      should generate some additional results for comparison: 
 
      sage: seq = [factorial(n+1) * harmonic_number(n+1, 1) for n in range(0, 8)]
-     sage: spseq_factors = [SeqGen_FirstOrderHarmonic, SeqGen_StirlingS1, 
-     ....:                  SeqGen_NormalizedHarmonicNumber]
+     sage: spseq_factors = [SeqGen_FirstOrderHarmonic, SeqGen_StirlingS1]
      sage: sm = guess(seq, spseq_factors = spseq_factors, num_seq_factors = 1)
      sage: print_match_summary(sm)
-     <TODO> 
+      ==== Formula Match # 1 / 2 ==== 
+        >> Factors Formula:     NormalizedH1Number(n + 1) * RemSeq(n)
+        >> Remaining Sequence:  [1, 1, 1, 1, 1, 1, 1, 1]
+        >> Remaining Sequence Formula(s):  [1]
+      ==== Formula Match # 2 / 2 ==== 
+        >> Factors Formula:     StirlingS1(n + 2, 2) * RemSeq(n)
+        >> Remaining Sequence:  [1, 1, 1, 1, 1, 1, 1, 1]
+        >> Remaining Sequence Formula(s):  [1]
 
-     Similarly, we repeat the same search except with index inputs to the 
+     Similarly, we can repeat the same search except with index inputs to the 
      sequence shifted from n+1 -> 2n+1: 
 
      sage: seq = [factorial(2*n+1) * harmonic_number(2*n+1, 1) for n in range(0, 8)]
      sage: sm = guess(seq, spseq_factors = spseq_factors, num_seq_factors = 1)
      sage: print_match_summary(sm)
-     <TODO> 
+      ==== Formula Match # 1 / 2 ==== 
+        >> Factors Formula:     NormalizedH1Number(2 * n + 1) * RemSeq(n)
+        >> Remaining Sequence:  [1, 1, 1, 1, 1, 1, 1, 1]
+        >> Remaining Sequence Formula(s):  [1]
+      ==== Formula Match # 2 / 2 ==== 
+        >> Factors Formula:     StirlingS1(2 * n + 2, 2) * RemSeq(n)
+        >> Remaining Sequence:  [1, 1, 1, 1, 1, 1, 1, 1]
+        >> Remaining Sequence Formula(s):  [1]
 
      Another related sequence case is formed by the second column of the 
      Stirling numbers of the first kind with S1(n, 2) = (n-1)! H_{n-1}, 
@@ -661,7 +674,14 @@ def guess(sequence, quick_eval = True, spseq_factors = SPECIAL_SEQUENCES,
      sage: sm = guess(seq, spseq_factors = [SeqGen_StirlingS1, 
      ....:                                  SeqGen_FirstOrderHarmonic])
      sage: print_match_summary(sm)
-     <TODO> 
+      ==== Formula Match # 1 / 2 ==== 
+        >> Factors Formula:     StirlingS1(3 * n + 4, 2) * RemSeq(n)
+        >> Remaining Sequence:  [1, 1, 1, 1, 1]
+        >> Remaining Sequence Formula(s):  [1]
+      ==== Formula Match # 2 / 2 ==== 
+        >> Factors Formula:     NormalizedH1Number(3 * n + 3) * RemSeq(n)
+        >> Remaining Sequence:  [1, 1, 1, 1, 1]
+        >> Remaining Sequence Formula(s):  [1] 
 
      An example where the special sequence factor identified is not an 
      exact match for the sequence, and is thus non-trivially passed into the 
@@ -690,12 +710,27 @@ def guess(sequence, quick_eval = True, spseq_factors = SPECIAL_SEQUENCES,
      ....:        for k in range(scf, 8 + scf)]
      sage: sm = guess(seq, spseq_factors = [SeqGen_EulerianE1])
      sage: print_match_summary(sm) 
-     <TODO>
+      ==== Formula Match # 1 / 2 ==== 
+        >> Factors Formula:     EulerianE1(n + 3, n) * RemSeq(n)
+        >> Remaining Sequence:  [1, -1, 1, -1, 1, -1, 1, -1]
+        >> Remaining Sequence Formula(s):  [-1, binomial(-1, n)]
+      ==== Formula Match # 2 / 2 ==== 
+        >> Factors Formula:     EulerianE1(n + 3, 2) * RemSeq(n)
+        >> Remaining Sequence:  [1, -1, 1, -1, 1, -1, 1, -1]
+        >> Remaining Sequence Formula(s):  [-1, binomial(-1, n)]
      
      Finally, we conclude the examples in this short section by producing 
-     a working, but still semi-toy conjured up, example of an input 
+     a working, but still semi-toy, mocked example of an input 
      sequence with factors of not one, but two special sequences: 
-     <TODO> 
+     
+     sage: seq = [S1(2*n, n) * S2(n+3, 3) for n in range(1, 8)]
+     sage: sm = guess(seq, num_seq_factors = 2, \
+     ....:            spseq_factors = [SeqGen_StirlingS1, SeqGen_StirlingS2])
+     sage: print_match_summary(sm)
+      ==== Formula Match # 1 / 1 ==== 
+        >> Factors Formula:     StirlingS2(n + 4, 3) * StirlingS1(2 * n + 2, n + 1) * RemSeq(n)
+        >> Remaining Sequence:  [1, 1, 1, 1, 1, 1, 1]
+        >> Remaining Sequence Formula(s):  [1]
 
      MISC NOTES / TODO / FUTURE FEATURES: 
      - The FriCAS package returns an incorrect formula on the sequence 
@@ -750,9 +785,9 @@ def guess(sequence, quick_eval = True, spseq_factors = SPECIAL_SEQUENCES,
      ## search for multiple sequence factors if specified: 
      for sfidx in range(1, num_seq_factors): 
           temp_working_fmatches = []
-          for wfm in working_fmatches: 
-               remseq_terms = wfm.remaining_sequence()
-               next_fmatches, next_working_fmatches = guess_subrotine(remseq_terms)
+          for (widx, wfm) in enumerate(working_fmatches): 
+               remseq_terms = wfm.remaining_sequence
+               next_fmatches, next_working_fmatches = guess_subroutine(remseq_terms)
                for nwfm in next_working_fmatches: 
                     temp_working_fmatches += [merge_func(wfm, nwfm)] 
                for fm in next_fmatches:

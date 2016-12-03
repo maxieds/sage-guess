@@ -338,7 +338,7 @@ SeqGen_NormalizedHarmonicNumber = \
      SequenceGenerator("NormalizedHNum", 
                        lambda n, r: (factorial(n)**r) * harmonic_number(n, r), 
                        domain_dim = 2, 
-                       latex_fmt = "({0})! \\cdot H_{{0}}^{({1})}")
+                       latex_fmt = "({0})!^{r} \\cdot H_{{0}}^{({1})}")
 
 r"""
 Default listing of the special SequenceGenerator objects available to the 
