@@ -37,6 +37,9 @@ class GuessFormulaResult(object):
           INPUT:
           - ``sage_expr`` -- a sage expression representing the guess function
           """
+          if isinstance(sage_expr, tuple): 
+               sage_expr = sage_expr[0]
+          ##
           self.sage_expr = sage_expr
           self.functor = lambda x: \
                eval_on_operands(lambda x: sage_expr)(n).subs(n == x)

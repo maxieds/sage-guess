@@ -143,7 +143,7 @@ class TriangularSequence(object):
           self.beta_prime = bp
           self.gamma_prime = gp
           self.stored_rows = max_rows
-          self.rec_data = []
+          self.rec_data = [[1]]
           self.generate_rows(1, max_rows)
      ## 
 
