@@ -19,6 +19,7 @@ def print_match_summary(fmatches):
           print ""
           fmatch.print_summary()
      ##
+     print "\n"
 ## 
 
 #sm = guess([0, 1, 4, 9, 16, 25, 36])
@@ -31,12 +32,22 @@ def print_match_summary(fmatches):
 #sm = guess(seq)
 #print_match_summary(sm)
 
-seq = [S1(3*n+1, 2) for n in range(0, 6)]
+#seq = [S1(3*n+1, 2) for n in range(0, 6)]
+#print seq
+#sm = guess(seq)
+#print_match_summary(sm)
+
+#seq = [S1(3*n+1, 2*n+2) for n in range(1, 8)]
+#print seq
+#sm = guess(seq)
+#print_match_summary(sm)
+
+seq = [13 * S1(3*n+1, 2*n+2) for n in range(1, 8)]
 print seq
 sm = guess(seq)
 print_match_summary(sm)
 
-seq = [S1(3*n+1, 2*n+2) for n in range(0, 8)]
+seq = [13 * n * S1(3*n+1, 2*n+2) for n in range(1, 8)]
 print seq
 sm = guess(seq)
 print_match_summary(sm)
