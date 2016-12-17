@@ -41,8 +41,9 @@ class GuessFormulaResult(object):
                sage_expr = sage_expr[0]
           ##
           self.sage_expr = sage_expr
-          self.functor = lambda x: \
-               eval_on_operands(lambda x: sage_expr)(n).subs(n == x)
+          #self.functor = lambda x: \
+          #     eval_on_operands(lambda x: sage_expr)(n).subs(n == x)
+          self.functor = None
      ## 
 
      def __str__(self): 
@@ -88,7 +89,7 @@ class GuessFormulaResult(object):
           Should be overridden by subclasses.
           """
           n = var('n')
-          print "   >> Sequence Formula: ", self.functor(n)
+          print "   >> Sequence Formula: ", self.sage_expr #self.functor(n)
      ##
 
 ## GuessFormulaResult
@@ -109,14 +110,16 @@ class GuessingFormulasForSeqs(object):
           - ``fricas_return`` -- output of calling a fricas.* function
           """
           n = var('n')
-          fricas_return = fricas_return.unparsed_input_form() 
-          #fricas_return = str(fricas_return)
-          #spos_start, spos_end = 0, -1 
-          #while fricas_return[spos_start:spos_start+1] != '[': spos_start += 1
-          #while fricas_return[spos_end:spos_end+1] != ']': spos_end -= 1
+          #fricas_return = fricas_return.unparsed_input_form() 
+          fricas_return = str(fricas_return)
+          spos_start, spos_end = 0, -1 
+          while fricas_return[spos_start] != chr(91): spos_start += 1
+          spos_start += 1
+          while fricas_return[spos_end] != chr(93): spos_end -= 1
           if fricas_return != '[]': 
-               #return sage_eval(str(fricas_return)[spos_start:spos_end], locals = {'n': n}) 
-               return sage_eval(fricas_return[1:-1], locals = {'n': n}) 
+               return fricas_return[spos_start:spos_end]
+               #return sage_eval(fricas_return[spos_start:spos_end], locals = {'n': n}) 
+               #return sage_eval(fricas_return, locals = {'n': n}) 
           else: 
                return None
      ##
