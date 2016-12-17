@@ -110,7 +110,12 @@ class GuessingFormulasForSeqs(object):
           """
           n = var('n')
           fricas_return = fricas_return.unparsed_input_form() 
+          #fricas_return = str(fricas_return)
+          #spos_start, spos_end = 0, -1 
+          #while fricas_return[spos_start:spos_start+1] != '[': spos_start += 1
+          #while fricas_return[spos_end:spos_end+1] != ']': spos_end -= 1
           if fricas_return != '[]': 
+               #return sage_eval(str(fricas_return)[spos_start:spos_end], locals = {'n': n}) 
                return sage_eval(fricas_return[1:-1], locals = {'n': n}) 
           else: 
                return None
