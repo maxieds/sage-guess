@@ -4,11 +4,12 @@ https://github.com/maxieds/sage-guess/wiki/Home/
 https://github.com/pypa/sampleproject/blob/master/setup.py
 """
 
-# Always prefer setuptools over distutils
-from setuptools import setup, find_packages
-# To use a consistent encoding
+## Always prefer setuptools over distutils
+#from setuptools import setup, find_packages
+## To use a consistent encoding
 from codecs import open
 from os import path
+from distutils.core import setup
 
 here = path.abspath(path.dirname(__file__))
 
@@ -100,4 +101,3 @@ setup(
     entry_points={
     },
 )
-print find_packages(exclude=['contrib', 'docs', 'tests'])
