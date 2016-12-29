@@ -41,9 +41,9 @@ class GuessFormulaResult(object):
                sage_expr = sage_expr[0]
           ##
           self.sage_expr = sage_expr
-          #self.functor = lambda x: \
-          #     eval_on_operands(lambda x: sage_expr)(n).subs(n == x)
-          self.functor = None
+          n = var('n')
+          self.functor = lambda x: sage_expr.subs(n = x)
+          #self.functor = None
      ## 
 
      def __str__(self): 
