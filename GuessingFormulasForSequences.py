@@ -109,19 +109,11 @@ class GuessingFormulasForSeqs(object):
 
           - ``fricas_return`` -- output of calling a fricas.* function
           """
-          n = var('n')
-          #fricas_return = fricas_return.unparsed_input_form() 
-          fricas_return = str(fricas_return)
-          spos_start, spos_end = 0, -1 
-          while fricas_return[spos_start] != chr(91): spos_start += 1
-          spos_start += 1
-          while fricas_return[spos_end] != chr(93): spos_end -= 1
-          if fricas_return != '[]': 
-               return fricas_return[spos_start:spos_end]
-               #return sage_eval(fricas_return[spos_start:spos_end], locals = {'n': n}) 
-               #return sage_eval(fricas_return, locals = {'n': n}) 
-          else: 
+          if len(fricas_return) > 0:
+               return factor(fricas_return[0].sage())
+          else:
                return None
+          
      ##
 
      @staticmethod
