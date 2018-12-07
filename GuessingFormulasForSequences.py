@@ -21,7 +21,7 @@ EXAMPLE::
 """
 
 from sage.all import *
-from sage.symbolic.function_factory import eval_on_operands
+from sage.symbolic.expression import _eval_on_operands as eval_on_operands
 from numpy import unique
 
 class GuessFormulaResult(object): 
